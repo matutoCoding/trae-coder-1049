@@ -128,14 +128,14 @@ export const useAppStore = create<AppStore>((set, get) => ({
     else if (updatedCustomer.totalSpent >= 10000) newLevel = 'vip';
     updatedCustomer.level = newLevel;
 
-    const newProcesses: ProcessItem[] = processStepOrder.map((step, idx) => ({
+    const newProcesses: ProcessItem[] = processStepOrder.map((step) => ({
       id: genId('p'),
       orderId: order.id,
       productName: order.productName,
       step: step as ProcessStep,
-      status: (idx === 0 ? 'in_progress' : 'pending') as ProcessStatus,
-      operator: idx === 0 ? '王师傅' : '',
-      startTime: idx === 0 ? dayjs().format('YYYY-MM-DD') : '',
+      status: 'pending' as ProcessStatus,
+      operator: '',
+      startTime: '',
       endTime: '',
       notes: '',
       materialUsed: 0

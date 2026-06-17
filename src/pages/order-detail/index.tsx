@@ -8,6 +8,7 @@ import { useAppStore } from '@/store';
 import { orderTypeLabels, orderStatusLabels } from '@/data/orders';
 import { processStepLabels, processStepOrder, processStatusLabels } from '@/data/processes';
 import { materialTypeLabels } from '@/data/materials';
+import type { OrderStatus } from '@/types';
 
 const statusStyleMap: Record<string, string> = {
   pending: styles.statusPending,
@@ -70,15 +71,64 @@ const OrderDetailPage: React.FC = () => {
 
   const handleStatusChange = () => {
     if (!order) return;
-    const statusFlow = ['pending', 'in_progress', 'completed', 'delivered'] as const;
-    const currentIdx = statusFlow.indexOf(order.status);
-    if (currentIdx < statusFlow.length - 1) {
-      const nextStatus = statusFlow[currentIdx + 1];
-      updateOrderStatus(orderId, nextStatus);
-      Taro.showToast({ title: `状态已更新为：${orderStatusLabels[nextStatus]}`, icon: 'none' });
-    } else {
-      Taro.showToast({ title: '订单已完成全部流程', icon: 'none' });
+    const allowedNext = getAllowedNextStatus();
+    if (!allowedNext) {
+      Taro.showToast({ title: getStatusBlockReason(), icon: 'none' });
+      return;
     }
+    updateOrderStatus(orderId, allowedNext);
+    Taro.showToast({ title: `状态已更新为：${orderStatusLabels[allowedNext]}`, icon: 'success' });
+  };
+
+  const getAllowedNextStatus = (): OrderStatus | null => {
+    if (!order) return null;
+    const completedSteps = orderProcesses.filter(p => p.status === 'completed').length;
+    const totalSteps = processStepOrder.length;
+
+    switch (order.status) {
+      case 'pending':
+        return completedSteps >= 1 ? 'in_progress' : null;
+      case 'in_progress':
+        return completedSteps >= totalSteps ? 'completed' : null;
+      case 'completed':
+        return 'delivered';
+      case 'delivered':
+      default:
+        return null;
+    }
+  };
+
+  const getStatusBlockReason = (): string => {
+    if (!order) return '';
+    const completedSteps = orderProcesses.filter(p => p.status === 'completed').length;
+    const totalSteps = processStepOrder.length;
+
+    switch (order.status) {
+      case 'pending':
+        return `请先推进至少1道工序（${completedSteps}/${totalSteps}）`;
+      case 'in_progress':
+        return `请先完成全部${totalSteps}道工序（${completedSteps}/${totalSteps}）`;
+      case 'completed':
+        return '';
+      case 'delivered':
+      default:
+        return '订单已完成全部流程';
+    }
+  };
+
+  const getNextButtonText = (): string => {
+    const next = getAllowedNextStatus();
+    if (!next) return '推进状态';
+    switch (next) {
+      case 'in_progress': return '标记制作中';
+      case 'completed': return '标记已完成';
+      case 'delivered': return '确认交付';
+      default: return '推进状态';
+    }
+  };
+
+  const isStatusButtonDisabled = (): boolean => {
+    return getAllowedNextStatus() === null;
   };
 
   const handleGoWorkshop = () => {
@@ -200,8 +250,11 @@ const OrderDetailPage: React.FC = () => {
         <View className={styles.btnSecondary} onClick={handleGoWorkshop}>
           <Text className={styles.btnSecondaryText}>工坊详情</Text>
         </View>
-        <View className={styles.btnPrimary} onClick={handleStatusChange}>
-          <Text className={styles.btnPrimaryText}>推进状态</Text>
+        <View
+          className={classnames(styles.btnPrimary, isStatusButtonDisabled() && styles.btnPrimaryDisabled)}
+          onClick={handleStatusChange}
+        >
+          <Text className={styles.btnPrimaryText}>{getNextButtonText()}</Text>
         </View>
       </View>
     </View>

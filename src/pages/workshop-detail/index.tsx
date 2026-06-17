@@ -77,9 +77,18 @@ const WorkshopDetailPage: React.FC = () => {
 
   const handleOpenAdvance = (step: ProcessStep) => {
     const stepInfo = orderProcesses.find(p => p.step === step);
-    if (stepInfo && stepInfo.status !== 'in_progress') {
-      Taro.showToast({ title: '该工序未在进行中', icon: 'none' });
+    if (!stepInfo) return;
+    if (stepInfo.status === 'completed') {
+      Taro.showToast({ title: '该工序已完成', icon: 'none' });
       return;
+    }
+    const stepIdx = processStepOrder.indexOf(step);
+    if (stepIdx > 0) {
+      const prevStep = orderProcesses[stepIdx - 1];
+      if (prevStep && prevStep.status !== 'completed') {
+        Taro.showToast({ title: `请先完成「${prevStep.label}」`, icon: 'none' });
+        return;
+      }
     }
     setSelectedStep(step);
     setMaterialInput('');
@@ -170,7 +179,8 @@ const WorkshopDetailPage: React.FC = () => {
               : '';
             const connectorClass = item.status === 'completed' ? styles.processConnectorDone : '';
             const isLast = idx === orderProcesses.length - 1;
-            const canAdvance = item.status === 'in_progress';
+            const prevDone = idx === 0 || orderProcesses[idx - 1].status === 'completed';
+            const canAdvance = item.status !== 'completed' && prevDone;
             return (
               <View className={styles.processItem} key={item.step}>
                 <View className={styles.processLine}>
@@ -192,7 +202,7 @@ const WorkshopDetailPage: React.FC = () => {
                   </View>
                   {canAdvance && (
                     <View className={styles.advanceBtn} onClick={() => handleOpenAdvance(item.step as ProcessStep)}>
-                      <Text className={styles.advanceBtnText}>完成此工序</Text>
+                      <Text className={styles.advanceBtnText}>{item.status === 'in_progress' ? '完成此工序' : '开始并完成'}</Text>
                     </View>
                   )}
                 </View>
