@@ -6,19 +6,21 @@ import styles from './index.module.scss';
 import StatCard from '@/components/StatCard';
 import SectionHeader from '@/components/SectionHeader';
 import { useAppStore } from '@/store';
-import { materialList, materialTypeLabels } from '@/data/materials';
+import { materialTypeLabels } from '@/data/materials';
 import { processStepLabels, processStepOrder, processStatusLabels } from '@/data/processes';
 import { orderTypeLabels, orderStatusLabels } from '@/data/orders';
 
 const WorkshopPage: React.FC = () => {
-  const [activeMainTab, setActiveMainTab] = useState<'material' | 'process'>('process');
+  const [activeMainTab, setActiveMainTab] = useState<'kanban' | 'material' | 'process'>('kanban');
   const [selectedOrderId, setSelectedOrderId] = useState('');
   const hydrate = useAppStore((s) => s.hydrate);
   const orders = useAppStore((s) => s.orders);
   const processes = useAppStore((s) => s.processes);
+  const materials = useAppStore((s) => s.materials);
   const getProcessesByOrderId = useAppStore((s) => s.getProcessesByOrderId);
   const getOrderProgress = useAppStore((s) => s.getOrderProgress);
   const getOrderMaterialUsed = useAppStore((s) => s.getOrderMaterialUsed);
+  const getPendingTasksByOperator = useAppStore((s) => s.getPendingTasksByOperator);
 
   useEffect(() => {
     hydrate();
@@ -63,11 +65,16 @@ const WorkshopPage: React.FC = () => {
     return getOrderProgress(selectedOrder.id);
   }, [selectedOrder, getOrderProgress]);
 
-  const totalRedCopper = materialList.filter(m => m.type === 'red_copper').reduce((s, m) => s + m.remaining, 0);
-  const totalBrass = materialList.filter(m => m.type === 'brass').reduce((s, m) => s + m.remaining, 0);
-  const totalBronze = materialList.filter(m => m.type === 'bronze').reduce((s, m) => s + m.remaining, 0);
+  const totalRedCopper = useMemo(() => materials.filter(m => m.type === 'red_copper').reduce((s, m) => s + m.remaining, 0), [materials]);
+  const totalBrass = useMemo(() => materials.filter(m => m.type === 'brass').reduce((s, m) => s + m.remaining, 0), [materials]);
+  const totalBronze = useMemo(() => materials.filter(m => m.type === 'bronze').reduce((s, m) => s + m.remaining, 0), [materials]);
 
   const inProgressProcesses = processes.filter(p => p.status === 'in_progress');
+  const pendingByOperator = getPendingTasksByOperator();
+
+  const handleTaskClick = (orderId: string, step: string) => {
+    Taro.navigateTo({ url: `/pages/workshop-detail/index?orderId=${orderId}&step=${step}` });
+  };
 
   return (
     <View className={styles.container}>
@@ -77,6 +84,14 @@ const WorkshopPage: React.FC = () => {
       </View>
 
       <View className={styles.mainTabs}>
+        <View
+          className={classnames(styles.mainTab, activeMainTab === 'kanban' && styles.mainTabActive)}
+          onClick={() => setActiveMainTab('kanban')}
+        >
+          <Text className={classnames(styles.mainTabText, activeMainTab === 'kanban' && styles.mainTabTextActive)}>
+            待办看板
+          </Text>
+        </View>
         <View
           className={classnames(styles.mainTab, activeMainTab === 'material' && styles.mainTabActive)}
           onClick={() => setActiveMainTab('material')}
@@ -95,6 +110,80 @@ const WorkshopPage: React.FC = () => {
         </View>
       </View>
 
+      {activeMainTab === 'kanban' && (
+        <View className={styles.kanbanContainer}>
+          <View className={styles.statsRow}>
+            <StatCard label="进行中" value={inProgressProcesses.length} unit="项" highlight />
+            <StatCard label="活跃订单" value={activeOrders.length} unit="单" />
+            <StatCard label="待处理师傅" value={Object.keys(pendingByOperator).length} unit="位" />
+          </View>
+
+          {Object.keys(pendingByOperator).length === 0 ? (
+            <View className={styles.emptyWrap}>
+              <Text className={styles.emptyIcon}>✅</Text>
+              <Text className={styles.emptyText}>所有工序已完成，暂无待办</Text>
+            </View>
+          ) : (
+            Object.entries(pendingByOperator).map(([operator, tasks]) => {
+              const inProgressCount = tasks.filter(t => t.status === 'in_progress').length;
+              return (
+                <View className={styles.operatorCard} key={operator}>
+                  <View className={styles.operatorHeader}>
+                    <View className={styles.operatorInfo}>
+                      <View className={styles.operatorAvatar}>{operator.slice(0, 1)}</View>
+                      <View>
+                        <Text className={styles.operatorName}>{operator}</Text>
+                        <Text className={styles.operatorDesc}>
+                          {inProgressCount > 0 ? `${inProgressCount}项进行中` : `${tasks.length}项待开始`}
+                        </Text>
+                      </View>
+                    </View>
+                    <View className={styles.operatorBadge}>
+                      <Text className={styles.operatorBadgeText}>{tasks.length}</Text>
+                    </View>
+                  </View>
+
+                  <View className={styles.operatorTasks}>
+                    {tasks.map((task) => (
+                      <View
+                        className={classnames(
+                          styles.taskCard,
+                          task.status === 'in_progress' && styles.taskCardActive
+                        )}
+                        key={task.id}
+                        onClick={() => handleTaskClick(task.orderId, task.step)}
+                      >
+                        <View className={styles.taskHeader}>
+                          <Text className={classnames(
+                            styles.taskStep,
+                            task.status === 'in_progress' && styles.taskStepActive
+                          )}>
+                            {processStepLabels[task.step]}
+                          </Text>
+                          <Text className={classnames(
+                            styles.taskStatus,
+                            task.status === 'pending' && styles.statusPending,
+                            task.status === 'in_progress' && styles.statusProgress,
+                            task.status === 'completed' && styles.statusCompleted
+                          )}>
+                            {processStatusLabels[task.status]}
+                          </Text>
+                        </View>
+                        <Text className={styles.taskProduct}>{task.productName}</Text>
+                        <View className={styles.taskFooter}>
+                          <Text className={styles.taskCustomer}>{task.order.customerName}</Text>
+                          <Text className={styles.taskDeadline}>截止 {task.order.deadline}</Text>
+                        </View>
+                      </View>
+                    ))}
+                  </View>
+                </View>
+              );
+            })
+          )}
+        </View>
+      )}
+
       {activeMainTab === 'material' ? (
         <>
           <View className={styles.statsRow}>
@@ -104,14 +193,14 @@ const WorkshopPage: React.FC = () => {
           </View>
           <View className={styles.section}>
             <SectionHeader title="铜料库存" actionText="登记" />
-            {materialList.map(item => {
+            {materials.map(item => {
               const dotStyle =
                 item.type === 'red_copper'
                   ? styles.typeDotRed
                   : item.type === 'brass'
                   ? styles.typeDotBrass
                   : styles.typeDotBronze;
-              const usagePercent = Math.round(((item.weight - item.remaining) / item.weight) * 100);
+              const usagePercent = item.weight > 0 ? Math.round(((item.weight - item.remaining) / item.weight) * 100) : 0;
               return (
                 <View className={styles.materialCard} key={item.id}>
                   <View className={styles.materialHeader}>
@@ -119,7 +208,7 @@ const WorkshopPage: React.FC = () => {
                       <View className={`${styles.typeDot} ${dotStyle}`} />
                       <Text className={styles.materialName}>{materialTypeLabels[item.type]}</Text>
                     </View>
-                    <Text className={styles.materialWeight}>{item.remaining}{item.unit}</Text>
+                    <Text className={styles.materialWeight}>{item.remaining.toFixed(1)}{item.unit}</Text>
                   </View>
                   <View className={styles.materialInfo}>
                     <View className={styles.materialInfoItem}>
@@ -143,7 +232,9 @@ const WorkshopPage: React.FC = () => {
             })}
           </View>
         </>
-      ) : (
+      ) : null}
+
+      {activeMainTab === 'process' && (
         <>
           <View className={styles.statsRow}>
             <StatCard label="进行中" value={inProgressProcesses.length} unit="项" highlight />

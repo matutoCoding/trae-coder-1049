@@ -76,7 +76,11 @@ const OrderDetailPage: React.FC = () => {
       Taro.showToast({ title: getStatusBlockReason(), icon: 'none' });
       return;
     }
-    updateOrderStatus(orderId, allowedNext);
+    const result = updateOrderStatus(orderId, allowedNext);
+    if (!result.success) {
+      Taro.showToast({ title: result.reason || '更新失败', icon: 'none' });
+      return;
+    }
     Taro.showToast({ title: `状态已更新为：${orderStatusLabels[allowedNext]}`, icon: 'success' });
   };
 
@@ -241,7 +245,20 @@ const OrderDetailPage: React.FC = () => {
           </View>
           <View className={styles.materialRow}>
             <Text className={styles.materialLabel}>实际消耗</Text>
-            <Text className={styles.materialValue}>{totalMaterialUsed.toFixed(2)}kg</Text>
+            <Text className={`${styles.materialValue} ${styles.materialActual}`}>{totalMaterialUsed.toFixed(2)}kg</Text>
+          </View>
+          <View className={styles.materialRow}>
+            <Text className={styles.materialLabel}>用量差异</Text>
+            <Text className={classnames(
+              styles.materialValue,
+              (totalMaterialUsed - order.copperUsed) > 0 ? styles.materialDiffOver : styles.materialDiffUnder
+            )}>
+              {totalMaterialUsed - order.copperUsed > 0 ? '+' : ''}{(totalMaterialUsed - order.copperUsed).toFixed(2)}kg
+            </Text>
+          </View>
+          <View className={styles.materialRow}>
+            <Text className={styles.materialLabel}>剩余可用</Text>
+            <Text className={styles.materialValue}>{Math.max(0, order.copperUsed - totalMaterialUsed).toFixed(2)}kg</Text>
           </View>
         </View>
       </View>

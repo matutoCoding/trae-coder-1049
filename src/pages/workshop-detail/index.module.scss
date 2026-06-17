@@ -82,6 +82,28 @@
   color: $color-primary;
 }
 
+.materialError {
+  color: $color-error;
+  font-weight: $font-weight-bold;
+}
+
+.materialSuccess {
+  color: $color-success;
+  font-weight: $font-weight-bold;
+}
+
+.materialWarning {
+  color: $color-warning;
+  font-weight: $font-weight-bold;
+}
+
+.processItemHighlight {
+  background: linear-gradient(135deg, rgba(184, 115, 51, 0.08) 0%, rgba(184, 115, 51, 0.02) 100%);
+  border-radius: $radius-md;
+  padding: $spacing-sm;
+  margin: 0 -#{$spacing-sm};
+}
+
 .processTimeline {
   background: $color-bg-card;
   border-radius: $radius-lg;

@@ -8,6 +8,7 @@ import { useAppStore } from '@/store';
 import { orderTypeLabels, orderStatusLabels } from '@/data/orders';
 import { processStepLabels, processStepOrder, processStatusLabels } from '@/data/processes';
 import { materialTypeLabels } from '@/data/materials';
+import { materialForStep } from '@/store';
 import type { ProcessStep } from '@/types';
 
 const statusStyleMap: Record<string, string> = {
@@ -19,12 +20,14 @@ const statusStyleMap: Record<string, string> = {
 const WorkshopDetailPage: React.FC = () => {
   const router = useRouter();
   const orderId = router.params.orderId || '';
+  const initStep = (router.params.step as ProcessStep) || '';
   const hydrate = useAppStore((s) => s.hydrate);
   const orders = useAppStore((s) => s.orders);
   const processes = useAppStore((s) => s.processes);
   const advanceProcess = useAppStore((s) => s.advanceProcess);
   const getOrderProgress = useAppStore((s) => s.getOrderProgress);
   const getOrderMaterialUsed = useAppStore((s) => s.getOrderMaterialUsed);
+  const getTotalMaterialRemaining = useAppStore((s) => s.getTotalMaterialRemaining);
   const getProcessesByOrderId = useAppStore((s) => s.getProcessesByOrderId);
 
   const [showAdvance, setShowAdvance] = useState(false);
@@ -35,6 +38,17 @@ const WorkshopDetailPage: React.FC = () => {
   useEffect(() => {
     hydrate();
   }, [hydrate]);
+
+  useEffect(() => {
+    if (initStep && processStepOrder.includes(initStep)) {
+      setTimeout(() => {
+        const el = document?.querySelector?.(`[data-step="${initStep}"]`);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }, 300);
+    }
+  }, [initStep]);
 
   const order = useMemo(() => {
     return orders.find(o => o.id === orderId);
@@ -68,12 +82,7 @@ const WorkshopDetailPage: React.FC = () => {
 
   const progressPercent = getOrderProgress(orderId);
   const totalMaterialUsed = getOrderMaterialUsed(orderId);
-
-  const currentStep = useMemo(() => {
-    const inProgress = orderProcesses.find(p => p.status === 'in_progress');
-    if (inProgress) return inProgress.step as ProcessStep;
-    return null;
-  }, [orderProcesses]);
+  const stockRemaining = order ? getTotalMaterialRemaining(order.copperType) : 0;
 
   const handleOpenAdvance = (step: ProcessStep) => {
     const stepInfo = orderProcesses.find(p => p.step === step);
@@ -99,7 +108,11 @@ const WorkshopDetailPage: React.FC = () => {
   const handleConfirmAdvance = () => {
     if (!selectedStep) return;
     const materialUsed = parseFloat(materialInput) || 0;
-    advanceProcess(orderId, selectedStep, materialUsed, notesInput);
+    const result = advanceProcess(orderId, selectedStep, materialUsed, notesInput);
+    if (!result.success) {
+      Taro.showToast({ title: result.reason || '推进失败', icon: 'none' });
+      return;
+    }
     setShowAdvance(false);
     setSelectedStep(null);
     Taro.showToast({ title: '工序已推进', icon: 'success' });
@@ -115,6 +128,9 @@ const WorkshopDetailPage: React.FC = () => {
       </View>
     );
   }
+
+  const diffAmount = Number((totalMaterialUsed - order.copperUsed).toFixed(2));
+  const showMaterialInput = selectedStep && materialForStep[selectedStep];
 
   return (
     <View className={styles.container}>
@@ -162,8 +178,22 @@ const WorkshopDetailPage: React.FC = () => {
             <Text className={`${styles.materialValue} ${styles.materialHighlight}`}>{totalMaterialUsed.toFixed(2)}kg</Text>
           </View>
           <View className={styles.materialRow}>
+            <Text className={styles.materialLabel}>用量差异</Text>
+            <Text className={`${styles.materialValue} ${diffAmount > 0 ? styles.materialError : styles.materialSuccess}`}>
+              {diffAmount > 0 ? '+' : ''}{diffAmount}kg
+            </Text>
+          </View>
+          <View className={styles.materialRow}>
+            <Text className={styles.materialLabel}>当前库存</Text>
+            <Text className={`${styles.materialValue} ${stockRemaining < 5 ? styles.materialWarning : ''}`}>
+              {stockRemaining.toFixed(2)}kg
+            </Text>
+          </View>
+          <View className={styles.materialRow}>
             <Text className={styles.materialLabel}>剩余可用</Text>
-            <Text className={styles.materialValue}>{Math.max(0, order.copperUsed - totalMaterialUsed).toFixed(2)}kg</Text>
+            <Text className={styles.materialValue}>
+              {Math.max(0, order.copperUsed - totalMaterialUsed).toFixed(2)}kg
+            </Text>
           </View>
         </View>
       </View>
@@ -181,8 +211,13 @@ const WorkshopDetailPage: React.FC = () => {
             const isLast = idx === orderProcesses.length - 1;
             const prevDone = idx === 0 || orderProcesses[idx - 1].status === 'completed';
             const canAdvance = item.status !== 'completed' && prevDone;
+            const isHighlighted = initStep === item.step;
             return (
-              <View className={styles.processItem} key={item.step}>
+              <View
+                className={classnames(styles.processItem, isHighlighted && styles.processItemHighlight)}
+                key={item.step}
+                data-step={item.step}
+              >
                 <View className={styles.processLine}>
                   <View className={`${styles.processDot} ${dotClass}`} />
                   {!isLast && <View className={`${styles.processConnector} ${connectorClass}`} />}
@@ -202,7 +237,9 @@ const WorkshopDetailPage: React.FC = () => {
                   </View>
                   {canAdvance && (
                     <View className={styles.advanceBtn} onClick={() => handleOpenAdvance(item.step as ProcessStep)}>
-                      <Text className={styles.advanceBtnText}>{item.status === 'in_progress' ? '完成此工序' : '开始并完成'}</Text>
+                      <Text className={styles.advanceBtnText}>
+                        {item.status === 'in_progress' ? '完成此工序' : '开始并完成'}
+                      </Text>
                     </View>
                   )}
                 </View>
@@ -216,25 +253,40 @@ const WorkshopDetailPage: React.FC = () => {
         <View className={styles.modalOverlay} onClick={() => setShowAdvance(false)}>
           <View className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
             <Text className={styles.modalTitle}>完成「{processStepLabels[selectedStep]}」工序</Text>
-            <View className={styles.formItem}>
-              <Text className={styles.formLabel}>材料消耗(kg)</Text>
-              <Input
-                className={styles.formInput}
-                type="digit"
-                placeholder="请输入本次消耗铜料重量"
-                value={materialInput}
-                onInput={(e) => setMaterialInput(e.detail.value)}
-              />
-            </View>
-            <View className={styles.formItem}>
-              <Text className={styles.formLabel}>工序备注</Text>
-              <Input
-                className={styles.formInput}
-                placeholder="请输入备注信息"
-                value={notesInput}
-                onInput={(e) => setNotesInput(e.detail.value)}
-              />
-            </View>
+            {showMaterialInput && (
+              <>
+                <View className={styles.formItem}>
+                  <Text className={styles.formLabel}>材料消耗(kg)</Text>
+                  <Input
+                    className={styles.formInput}
+                    type="digit"
+                    placeholder={`${materialTypeLabels[order.copperType] || '铜料'}当前库存${stockRemaining.toFixed(2)}kg`}
+                    value={materialInput}
+                    onInput={(e) => setMaterialInput(e.detail.value)}
+                  />
+                </View>
+                <View className={styles.formItem}>
+                  <Text className={styles.formLabel}>工序备注</Text>
+                  <Input
+                    className={styles.formInput}
+                    placeholder="请输入备注信息（可选）"
+                    value={notesInput}
+                    onInput={(e) => setNotesInput(e.detail.value)}
+                  />
+                </View>
+              </>
+            )}
+            {!showMaterialInput && (
+              <View className={styles.formItem}>
+                <Text className={styles.formLabel}>工序备注</Text>
+                <Input
+                  className={styles.formInput}
+                  placeholder="请输入备注信息（可选）"
+                  value={notesInput}
+                  onInput={(e) => setNotesInput(e.detail.value)}
+                />
+              </View>
+            )}
             <View className={styles.modalActions}>
               <View className={styles.modalCancel} onClick={() => setShowAdvance(false)}>
                 <Text className={styles.modalCancelText}>取消</Text>

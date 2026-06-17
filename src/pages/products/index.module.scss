@@ -58,11 +58,49 @@
   display: flex;
   gap: $spacing-md;
   transition: all $transition-base;
+  position: relative;
 
   &:active {
     opacity: 0.9;
     transform: scale(0.98);
   }
+}
+
+.productCardDraft {
+  border: 2rpx dashed $color-warning;
+  background: linear-gradient(135deg, rgba(212, 160, 60, 0.04) 0%, $color-bg-card 100%);
+}
+
+.draftBadge {
+  position: absolute;
+  top: 16rpx;
+  right: 16rpx;
+  padding: 4rpx 16rpx;
+  background: $color-warning;
+  border-radius: $radius-xs;
+}
+
+.draftBadgeText {
+  font-size: $font-size-xs;
+  color: $color-text-white;
+  font-weight: $font-weight-medium;
+}
+
+.productSource {
+  display: flex;
+  margin-top: 4rpx;
+}
+
+.productSourceLabel {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  flex-shrink: 0;
+}
+
+.productSourceText {
+  font-size: $font-size-xs;
+  color: $color-text-secondary;
+  font-weight: $font-weight-medium;
 }
 
 .productImage {
@@ -86,6 +124,7 @@
   color: $color-text-primary;
   @include text-ellipsis;
   display: block;
+  padding-right: 80rpx;
 }
 
 .productMeta {
@@ -120,6 +159,11 @@
 .statusStock {
   color: $color-success;
   background: rgba(107, 142, 35, 0.12);
+}
+
+.statusDraft {
+  color: $color-warning;
+  background: rgba(212, 160, 60, 0.15);
 }
 
 .statusSold {
@@ -171,4 +215,92 @@
   font-weight: $font-weight-semibold;
   color: $color-primary;
   margin-left: 8rpx;
+}
+
+.editCard {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  margin: -#{$spacing-sm} $spacing-lg $spacing-md;
+  box-shadow: $shadow-card;
+  border: 2rpx solid $color-primary-light;
+}
+
+.editHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: $spacing-md;
+}
+
+.editTitle {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-primary;
+}
+
+.editClose {
+  font-size: $font-size-lg;
+  color: $color-text-tertiary;
+  padding: 4rpx 8rpx;
+}
+
+.editRow {
+  display: flex;
+  align-items: center;
+  padding: $spacing-sm 0;
+  border-bottom: 1rpx solid $color-border;
+
+  &:last-of-type {
+    border-bottom: none;
+  }
+}
+
+.editLabel {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  width: 160rpx;
+  flex-shrink: 0;
+}
+
+.editInput {
+  flex: 1;
+  font-size: $font-size-sm;
+  color: $color-text-primary;
+  padding: 8rpx 0;
+}
+
+.editActions {
+  display: flex;
+  gap: $spacing-md;
+  margin-top: $spacing-lg;
+}
+
+.editBtnCancel {
+  flex: 1;
+  padding: $spacing-sm;
+  background: $color-bg-page;
+  border-radius: $radius-button;
+  text-align: center;
+  border: 1rpx solid $color-border;
+}
+
+.editBtnCancelText {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  font-weight: $font-weight-medium;
+}
+
+.editBtnSave {
+  flex: 2;
+  padding: $spacing-sm;
+  background: $color-primary;
+  border-radius: $radius-button;
+  text-align: center;
+}
+
+.editBtnSaveText {
+  font-size: $font-size-sm;
+  color: $color-text-white;
+  font-weight: $font-weight-semibold;
 }

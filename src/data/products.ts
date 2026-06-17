@@ -1,6 +1,7 @@
 import type { ProductItem } from '@/types';
 
 export const productStatusLabels: Record<string, string> = {
+  draft: '草稿',
   stock: '在库',
   sold: '已售',
   reserved: '预留'
@@ -15,9 +16,13 @@ export const productList: ProductItem[] = [
     dimensions: '口径8cm 高12cm',
     image: 'https://picsum.photos/id/598/300/300',
     createdAt: '2026-05-20',
+    completedDate: '2026-05-20',
     status: 'stock',
     price: 2680,
-    orderId: ''
+    orderId: '',
+    customerName: '',
+    actualCopperUsed: 0,
+    isDraft: false
   },
   {
     id: 'pr002',
@@ -27,9 +32,13 @@ export const productList: ProductItem[] = [
     dimensions: '直径8cm 高5cm',
     image: 'https://picsum.photos/id/582/300/300',
     createdAt: '2026-05-18',
+    completedDate: '2026-05-18',
     status: 'sold',
     price: 580,
-    orderId: ''
+    orderId: '',
+    customerName: '',
+    actualCopperUsed: 0,
+    isDraft: false
   },
   {
     id: 'pr003',
@@ -39,9 +48,13 @@ export const productList: ProductItem[] = [
     dimensions: '口径12cm 高28cm',
     image: 'https://picsum.photos/id/230/300/300',
     createdAt: '2026-05-10',
+    completedDate: '2026-05-10',
     status: 'stock',
     price: 1580,
-    orderId: ''
+    orderId: '',
+    customerName: '',
+    actualCopperUsed: 0,
+    isDraft: false
   },
   {
     id: 'pr004',
@@ -51,9 +64,13 @@ export const productList: ProductItem[] = [
     dimensions: '壶高15cm 杯口径5cm',
     image: 'https://picsum.photos/id/225/300/300',
     createdAt: '2026-04-28',
+    completedDate: '2026-04-28',
     status: 'reserved',
     price: 1280,
-    orderId: 'o010'
+    orderId: 'o010',
+    customerName: '张雅琴',
+    actualCopperUsed: 2.8,
+    isDraft: false
   },
   {
     id: 'pr005',
@@ -63,9 +80,13 @@ export const productList: ProductItem[] = [
     dimensions: '高35cm 底座15cm',
     image: 'https://picsum.photos/id/1082/300/300',
     createdAt: '2026-04-15',
+    completedDate: '2026-04-15',
     status: 'stock',
     price: 3680,
-    orderId: ''
+    orderId: '',
+    customerName: '',
+    actualCopperUsed: 0,
+    isDraft: false
   },
   {
     id: 'pr006',
@@ -75,9 +96,13 @@ export const productList: ProductItem[] = [
     dimensions: '长18cm 宽5cm',
     image: 'https://picsum.photos/id/787/300/300',
     createdAt: '2026-06-01',
+    completedDate: '2026-06-01',
     status: 'stock',
     price: 280,
-    orderId: ''
+    orderId: '',
+    customerName: '',
+    actualCopperUsed: 0,
+    isDraft: false
   },
   {
     id: 'pr007',
@@ -87,9 +112,13 @@ export const productList: ProductItem[] = [
     dimensions: '高22cm 底径12cm',
     image: 'https://picsum.photos/id/3/300/300',
     createdAt: '2026-03-20',
+    completedDate: '2026-03-20',
     status: 'sold',
     price: 4200,
-    orderId: ''
+    orderId: '',
+    customerName: '',
+    actualCopperUsed: 0,
+    isDraft: false
   },
   {
     id: 'pr008',
@@ -99,9 +128,13 @@ export const productList: ProductItem[] = [
     dimensions: '口径10cm 高9cm',
     image: 'https://picsum.photos/id/1036/300/300',
     createdAt: '2026-05-25',
+    completedDate: '2026-05-25',
     status: 'stock',
     price: 980,
-    orderId: ''
+    orderId: '',
+    customerName: '',
+    actualCopperUsed: 0,
+    isDraft: false
   },
   {
     id: 'pr009',
@@ -111,9 +144,13 @@ export const productList: ProductItem[] = [
     dimensions: '口径3cm 高20cm',
     image: 'https://picsum.photos/id/1015/300/300',
     createdAt: '2026-06-05',
+    completedDate: '2026-06-05',
     status: 'reserved',
     price: 680,
-    orderId: 'o008'
+    orderId: 'o008',
+    customerName: '周启明',
+    actualCopperUsed: 1.6,
+    isDraft: false
   },
   {
     id: 'pr010',
@@ -123,8 +160,12 @@ export const productList: ProductItem[] = [
     dimensions: '口径9cm 高14cm',
     image: 'https://picsum.photos/id/1018/300/300',
     createdAt: '2026-06-01',
+    completedDate: '2026-06-01',
     status: 'sold',
     price: 1680,
-    orderId: 'o005'
+    orderId: 'o005',
+    customerName: '陈志远',
+    actualCopperUsed: 2.2,
+    isDraft: false
   }
 ];

@@ -246,8 +246,23 @@
 .materialCard {
   background: $color-bg-card;
   border-radius: $radius-lg;
-  padding: $spacing-lg;
+  padding: $spacing-md $spacing-lg;
   box-shadow: $shadow-card;
+}
+
+.materialActual {
+  color: $color-primary;
+  font-weight: $font-weight-bold;
+}
+
+.materialDiffOver {
+  color: $color-error;
+  font-weight: $font-weight-bold;
+}
+
+.materialDiffUnder {
+  color: $color-success;
+  font-weight: $font-weight-bold;
 }
 
 .materialRow {

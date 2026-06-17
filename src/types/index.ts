@@ -56,7 +56,7 @@ export interface ProcessItem {
   materialUsed: number;
 }
 
-export type ProductStatus = 'stock' | 'sold' | 'reserved';
+export type ProductStatus = 'draft' | 'stock' | 'sold' | 'reserved';
 
 export interface ProductItem {
   id: string;
@@ -66,9 +66,13 @@ export interface ProductItem {
   dimensions: string;
   image: string;
   createdAt: string;
+  completedDate: string;
   status: ProductStatus;
   price: number;
   orderId: string;
+  customerName: string;
+  actualCopperUsed: number;
+  isDraft: boolean;
 }
 
 export type CustomerLevel = 'normal' | 'vip' | 'svip';

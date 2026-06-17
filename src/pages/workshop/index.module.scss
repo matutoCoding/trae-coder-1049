@@ -398,6 +398,141 @@
   color: $color-primary;
 }
 
+.kanbanContainer {
+  padding: 0 $spacing-lg;
+}
+
+.operatorCard {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-md $spacing-md $spacing-sm;
+  margin-bottom: $spacing-md;
+  box-shadow: $shadow-card;
+}
+
+.operatorHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: $spacing-sm;
+}
+
+.operatorInfo {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+}
+
+.operatorAvatar {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 50%;
+  background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+  color: $color-text-white;
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  @include flex-center;
+}
+
+.operatorName {
+  font-size: $font-size-md;
+  font-weight: $font-weight-bold;
+  color: $color-text-primary;
+  display: block;
+}
+
+.operatorDesc {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  display: block;
+  margin-top: 4rpx;
+}
+
+.operatorBadge {
+  min-width: 48rpx;
+  height: 48rpx;
+  border-radius: 24rpx;
+  background: $color-tag-bg;
+  padding: 0 $spacing-sm;
+  @include flex-center;
+}
+
+.operatorBadgeText {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-bold;
+  color: $color-primary;
+}
+
+.operatorTasks {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+}
+
+.taskCard {
+  background: $color-bg-page;
+  border-radius: $radius-md;
+  padding: $spacing-sm $spacing-md;
+  border: 2rpx solid transparent;
+  transition: all $transition-base;
+
+  &:active {
+    opacity: 0.85;
+  }
+}
+
+.taskCardActive {
+  background: linear-gradient(135deg, rgba(184, 115, 51, 0.08) 0%, rgba(184, 115, 51, 0.02) 100%);
+  border-color: rgba(184, 115, 51, 0.3);
+}
+
+.taskHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: $spacing-xs;
+}
+
+.taskStep {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-bold;
+  color: $color-text-secondary;
+}
+
+.taskStepActive {
+  color: $color-primary;
+}
+
+.taskStatus {
+  font-size: $font-size-xs;
+  padding: 4rpx 12rpx;
+  border-radius: $radius-round;
+}
+
+.taskProduct {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  display: block;
+  margin-bottom: 6rpx;
+}
+
+.taskFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.taskCustomer {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
+.taskDeadline {
+  font-size: $font-size-xs;
+  color: $color-error;
+}
+
 .emptyWrap {
   @include flex-center;
   flex-direction: column;
