@@ -1,0 +1,70 @@
+@use '@/styles/variables.scss' as *;
+
+.container {
+  min-height: 100vh;
+  background: linear-gradient(180deg, rgba(184, 115, 51, 0.08) 0%, $color-bg-page 30%);
+  padding-bottom: 120rpx;
+}
+
+.header {
+  padding: $spacing-lg $spacing-lg $spacing-sm;
+}
+
+.headerTitle {
+  font-size: $font-size-xxl;
+  font-weight: $font-weight-bold;
+  color: $color-text-primary;
+  display: block;
+  margin-bottom: $spacing-xs;
+}
+
+.headerDesc {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+  display: block;
+}
+
+.statsRow {
+  display: flex;
+  gap: $spacing-md;
+  padding: $spacing-md $spacing-lg;
+  margin-bottom: $spacing-md;
+}
+
+.tabSection {
+  padding: 0 $spacing-lg;
+  margin-bottom: $spacing-md;
+}
+
+.orderList {
+  padding: 0 $spacing-lg;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+}
+
+.addBtn {
+  position: fixed;
+  bottom: 180rpx;
+  right: $spacing-lg;
+  width: 112rpx;
+  height: 112rpx;
+  background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+  border-radius: $radius-round;
+  @include flex-center;
+  box-shadow: 0 4rpx 20rpx rgba(184, 115, 51, 0.4);
+  transition: all $transition-base;
+  z-index: 10;
+
+  &:active {
+    opacity: 0.9;
+    transform: scale(0.95);
+  }
+}
+
+.addBtnText {
+  font-size: 56rpx;
+  color: $color-text-white;
+  line-height: 1;
+  margin-top: -4rpx;
+}

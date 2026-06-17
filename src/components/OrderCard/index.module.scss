@@ -1,0 +1,110 @@
+@use '@/styles/variables.scss' as *;
+
+.orderCard {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  box-shadow: $shadow-card;
+  transition: all $transition-base;
+
+  &:active {
+    opacity: 0.9;
+    transform: scale(0.98);
+  }
+}
+
+.orderHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-md;
+}
+
+.orderType {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+}
+
+.typeTag {
+  font-size: $font-size-xs;
+  color: $color-tag-text;
+  background: $color-tag-bg;
+  padding: 4rpx $spacing-sm;
+  border-radius: $radius-xs;
+  margin-right: $spacing-sm;
+  white-space: nowrap;
+}
+
+.orderName {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  @include text-ellipsis;
+}
+
+.statusTag {
+  font-size: $font-size-xs;
+  padding: 4rpx $spacing-sm;
+  border-radius: $radius-xs;
+  white-space: nowrap;
+  margin-left: $spacing-sm;
+}
+
+.statusPending {
+  color: $color-warning;
+  background: rgba(212, 160, 60, 0.12);
+}
+
+.statusProgress {
+  color: $color-primary;
+  background: rgba(184, 115, 51, 0.12);
+}
+
+.statusCompleted {
+  color: $color-success;
+  background: rgba(107, 142, 35, 0.12);
+}
+
+.statusDelivered {
+  color: $color-info;
+  background: rgba(123, 143, 161, 0.12);
+}
+
+.orderBody {
+  margin-bottom: $spacing-md;
+}
+
+.orderCustomer {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  display: block;
+  margin-bottom: $spacing-xs;
+}
+
+.orderDesc {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+  @include text-ellipsis-multi(1);
+  display: block;
+}
+
+.orderFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: $spacing-md;
+  border-top: 1rpx solid $color-divider;
+}
+
+.orderDate {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
+.orderAmount {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  color: $color-price;
+}

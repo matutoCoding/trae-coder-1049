@@ -1,0 +1,59 @@
+@use '@/styles/variables.scss' as *;
+
+.styleCard {
+  width: calc(50% - 12rpx);
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  overflow: hidden;
+  box-shadow: $shadow-card;
+  transition: all $transition-base;
+
+  &:active {
+    opacity: 0.9;
+    transform: scale(0.98);
+  }
+}
+
+.styleImage {
+  width: 100%;
+  height: 260rpx;
+}
+
+.styleInfo {
+  padding: $spacing-md;
+}
+
+.styleName {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  @include text-ellipsis;
+  display: block;
+}
+
+.styleDesc {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  margin-top: $spacing-xs;
+  @include text-ellipsis-multi(2);
+  display: block;
+  line-height: $line-height-normal;
+}
+
+.styleBottom {
+  display: flex;
+  align-items: baseline;
+  margin-top: $spacing-sm;
+}
+
+.stylePrice {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  color: $color-price;
+}
+
+.styleUnit {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  margin-left: 4rpx;
+}

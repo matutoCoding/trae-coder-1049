@@ -1,0 +1,368 @@
+@use '@/styles/variables.scss' as *;
+
+.container {
+  min-height: 100vh;
+  background: linear-gradient(180deg, rgba(184, 115, 51, 0.08) 0%, $color-bg-page 30%);
+  padding-bottom: 120rpx;
+}
+
+.header {
+  padding: $spacing-lg $spacing-lg $spacing-sm;
+}
+
+.headerTitle {
+  font-size: $font-size-xxl;
+  font-weight: $font-weight-bold;
+  color: $color-text-primary;
+  display: block;
+  margin-bottom: $spacing-xs;
+}
+
+.headerDesc {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+  display: block;
+}
+
+.mainTabs {
+  display: flex;
+  padding: 0 $spacing-lg;
+  margin-bottom: $spacing-lg;
+  gap: 0;
+  background: $color-bg-card;
+  border-radius: $radius-button;
+  overflow: hidden;
+  box-shadow: $shadow-card;
+}
+
+.mainTab {
+  flex: 1;
+  height: 80rpx;
+  @include flex-center;
+  transition: all $transition-base;
+
+  &:active {
+    opacity: 0.85;
+  }
+}
+
+.mainTabActive {
+  background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+}
+
+.mainTabText {
+  font-size: $font-size-md;
+  color: $color-text-secondary;
+  font-weight: $font-weight-medium;
+}
+
+.mainTabTextActive {
+  color: $color-text-white;
+}
+
+.statsRow {
+  display: flex;
+  gap: $spacing-md;
+  padding: $spacing-md $spacing-lg;
+  margin-bottom: $spacing-lg;
+}
+
+.section {
+  padding: 0 $spacing-lg;
+  margin-bottom: $spacing-lg;
+}
+
+.productCard {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  box-shadow: $shadow-card;
+  margin-bottom: $spacing-md;
+  display: flex;
+  gap: $spacing-md;
+}
+
+.productImage {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: $radius-md;
+  flex-shrink: 0;
+}
+
+.productInfo {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.productName {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  @include text-ellipsis;
+  display: block;
+}
+
+.productMeta {
+  display: flex;
+  gap: $spacing-lg;
+}
+
+.productMetaItem {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
+.productBottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.productPrice {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  color: $color-price;
+}
+
+.productStatus {
+  font-size: $font-size-xs;
+  padding: 4rpx $spacing-sm;
+  border-radius: $radius-xs;
+  white-space: nowrap;
+}
+
+.statusStock {
+  color: $color-success;
+  background: rgba(107, 142, 35, 0.12);
+}
+
+.statusSold {
+  color: $color-info;
+  background: rgba(123, 143, 161, 0.12);
+}
+
+.statusReserved {
+  color: $color-warning;
+  background: rgba(212, 160, 60, 0.12);
+}
+
+.customerCard {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  box-shadow: $shadow-card;
+  margin-bottom: $spacing-md;
+}
+
+.customerHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-md;
+}
+
+.customerNameRow {
+  display: flex;
+  align-items: center;
+}
+
+.customerName {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  margin-right: $spacing-sm;
+}
+
+.customerLevel {
+  font-size: $font-size-xs;
+  padding: 2rpx $spacing-sm;
+  border-radius: $radius-xs;
+  white-space: nowrap;
+}
+
+.levelNormal {
+  color: $color-text-tertiary;
+  background: $color-divider;
+}
+
+.levelVip {
+  color: $color-primary-dark;
+  background: $color-tag-bg;
+}
+
+.levelSvip {
+  color: $color-error;
+  background: rgba(199, 84, 80, 0.12);
+}
+
+.customerPhone {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+}
+
+.customerStats {
+  display: flex;
+  gap: $spacing-xl;
+  margin-bottom: $spacing-sm;
+}
+
+.customerStatItem {
+  display: flex;
+  flex-direction: column;
+}
+
+.customerStatLabel {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  margin-bottom: 4rpx;
+}
+
+.customerStatValue {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.customerNotes {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+  @include text-ellipsis-multi(1);
+}
+
+.saleCard {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  box-shadow: $shadow-card;
+  margin-bottom: $spacing-md;
+}
+
+.saleHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-sm;
+}
+
+.saleProduct {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  @include text-ellipsis;
+  flex: 1;
+}
+
+.saleType {
+  font-size: $font-size-xs;
+  padding: 4rpx $spacing-sm;
+  border-radius: $radius-xs;
+  white-space: nowrap;
+  margin-left: $spacing-sm;
+  color: $color-tag-text;
+  background: $color-tag-bg;
+}
+
+.saleMeta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-xs;
+}
+
+.saleCustomer {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+}
+
+.saleDate {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
+.saleFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: $spacing-sm;
+  border-top: 1rpx solid $color-divider;
+}
+
+.saleAmount {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  color: $color-price;
+}
+
+.salePayment {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+}
+
+.saleMethod {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
+.saleStatus {
+  font-size: $font-size-xs;
+  padding: 4rpx $spacing-sm;
+  border-radius: $radius-xs;
+  white-space: nowrap;
+}
+
+.paymentPaid {
+  color: $color-success;
+  background: rgba(107, 142, 35, 0.12);
+}
+
+.paymentPartial {
+  color: $color-warning;
+  background: rgba(212, 160, 60, 0.12);
+}
+
+.paymentUnpaid {
+  color: $color-error;
+  background: rgba(199, 84, 80, 0.12);
+}
+
+.incomeSummary {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  box-shadow: $shadow-card;
+  margin: 0 $spacing-lg $spacing-lg;
+}
+
+.incomeRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: $spacing-sm 0;
+
+  & + & {
+    border-top: 1rpx solid $color-divider;
+  }
+}
+
+.incomeLabel {
+  font-size: $font-size-md;
+  color: $color-text-secondary;
+}
+
+.incomeValue {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  color: $color-text-primary;
+}
+
+.incomeValuePositive {
+  color: $color-success;
+}
+
+.incomeValueNegative {
+  color: $color-error;
+}

@@ -1,0 +1,36 @@
+@use '@/styles/variables.scss' as *;
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-md;
+}
+
+.titleWrap {
+  display: flex;
+  align-items: center;
+}
+
+.indicator {
+  width: 6rpx;
+  height: 28rpx;
+  background: $color-primary;
+  border-radius: $radius-xs;
+  margin-right: $spacing-sm;
+}
+
+.title {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.action {
+  padding: $spacing-xs $spacing-sm;
+}
+
+.actionText {
+  font-size: $font-size-sm;
+  color: $color-primary;
+}

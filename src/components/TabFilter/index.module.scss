@@ -1,0 +1,42 @@
+@use '@/styles/variables.scss' as *;
+
+.tabScroll {
+  width: 100%;
+  @include scroll-x-container;
+}
+
+.tabList {
+  display: flex;
+  padding: $spacing-sm 0;
+  gap: $spacing-sm;
+}
+
+.tabItem {
+  @include scroll-x-item(auto);
+  padding: $spacing-xs $spacing-lg;
+  background: $color-bg-card;
+  border-radius: $radius-button;
+  border: 2rpx solid $color-border;
+  transition: all $transition-base;
+
+  &:active {
+    opacity: 0.85;
+    transform: scale(0.97);
+  }
+}
+
+.tabItemActive {
+  background: $color-primary;
+  border-color: $color-primary;
+}
+
+.tabText {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  white-space: nowrap;
+}
+
+.tabTextActive {
+  color: $color-text-white;
+  font-weight: $font-weight-medium;
+}
