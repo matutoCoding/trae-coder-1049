@@ -18,11 +18,14 @@ export interface OrderItem {
   customerName: string;
   type: OrderType;
   productName: string;
+  styleId: string;
   status: OrderStatus;
   amount: number;
   createdAt: string;
   deadline: string;
   description: string;
+  copperUsed: number;
+  copperType: string;
 }
 
 export type MaterialType = 'red_copper' | 'brass' | 'bronze';
@@ -50,6 +53,7 @@ export interface ProcessItem {
   startTime: string;
   endTime: string;
   notes: string;
+  materialUsed: number;
 }
 
 export type ProductStatus = 'stock' | 'sold' | 'reserved';
@@ -64,6 +68,7 @@ export interface ProductItem {
   createdAt: string;
   status: ProductStatus;
   price: number;
+  orderId: string;
 }
 
 export type CustomerLevel = 'normal' | 'vip' | 'svip';
@@ -88,6 +93,7 @@ export interface SaleItem {
   id: string;
   type: SaleType;
   productName: string;
+  customerId: string;
   customerName: string;
   amount: number;
   quantity: number;

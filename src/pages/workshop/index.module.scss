@@ -158,95 +158,172 @@
   background: linear-gradient(90deg, $color-primary 0%, $color-primary-light 100%);
 }
 
-.processCard {
+.orderSelector {
+  margin-bottom: $spacing-md;
+}
+
+.orderScroll {
+  width: 100%;
+  @include scroll-x-container;
+}
+
+.orderTabs {
+  display: flex;
+  gap: $spacing-sm;
+  padding: $spacing-sm 0;
+}
+
+.orderTab {
+  @include scroll-x-item(auto);
+  padding: $spacing-xs $spacing-lg;
+  background: $color-bg-card;
+  border-radius: $radius-button;
+  border: 2rpx solid $color-border;
+  transition: all $transition-base;
+
+  &:active {
+    opacity: 0.85;
+  }
+}
+
+.orderTabActive {
+  background: $color-primary;
+  border-color: $color-primary;
+}
+
+.orderTabText {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  white-space: nowrap;
+}
+
+.orderTabTextActive {
+  color: $color-text-white;
+  font-weight: $font-weight-medium;
+}
+
+.orderProgress {
+  margin: 0 $spacing-lg $spacing-lg;
   background: $color-bg-card;
   border-radius: $radius-lg;
   padding: $spacing-lg;
   box-shadow: $shadow-card;
-  margin-bottom: $spacing-md;
 }
 
-.processHeader {
+.progressHeader {
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
   margin-bottom: $spacing-sm;
 }
 
-.processProduct {
+.progressTitle {
   font-size: $font-size-md;
   font-weight: $font-weight-semibold;
   color: $color-text-primary;
-  @include text-ellipsis;
+}
+
+.progressPercent {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  color: $color-primary;
+}
+
+.progressTrack {
+  height: 16rpx;
+  background: $color-divider;
+  border-radius: $radius-round;
+  overflow: hidden;
+}
+
+.progressFillBar {
+  height: 100%;
+  border-radius: $radius-round;
+  background: linear-gradient(90deg, $color-primary 0%, $color-primary-light 100%);
+  transition: width $transition-base;
+}
+
+.processTimeline {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  box-shadow: $shadow-card;
+}
+
+.processItem {
+  display: flex;
+  padding-bottom: $spacing-lg;
+
+  &:last-child {
+    padding-bottom: 0;
+  }
+}
+
+.processLine {
+  width: 48rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.processDot {
+  width: 24rpx;
+  height: 24rpx;
+  border-radius: $radius-round;
+  background: $color-border;
+  flex-shrink: 0;
+}
+
+.processDotDone {
+  background: $color-primary;
+}
+
+.processDotActive {
+  background: $color-warning;
+  box-shadow: 0 0 0 6rpx rgba(212, 160, 60, 0.2);
+}
+
+.processConnector {
+  width: 4rpx;
   flex: 1;
+  background: $color-border;
+  margin-top: $spacing-xs;
 }
 
-.stepTag {
-  font-size: $font-size-xs;
-  padding: 4rpx $spacing-sm;
-  border-radius: $radius-xs;
-  white-space: nowrap;
-  margin-left: $spacing-sm;
+.processConnectorDone {
+  background: $color-primary;
 }
 
-.stepForging {
-  color: $color-primary-dark;
-  background: rgba(184, 115, 51, 0.12);
+.processContent {
+  flex: 1;
+  margin-left: $spacing-md;
+  min-width: 0;
 }
 
-.stepChiseling {
-  color: $color-gold;
-  background: rgba(212, 160, 60, 0.12);
-}
-
-.stepAnnealing {
-  color: $color-error;
-  background: rgba(199, 84, 80, 0.12);
-}
-
-.stepPolishing {
-  color: $color-success;
-  background: rgba(107, 142, 35, 0.12);
-}
-
-.stepPatina {
-  color: $color-info;
-  background: rgba(123, 143, 161, 0.12);
-}
-
-.processMeta {
+.processNameRow {
   display: flex;
   align-items: center;
-  gap: $spacing-lg;
-  margin-bottom: $spacing-sm;
+  justify-content: space-between;
+  margin-bottom: 4rpx;
 }
 
-.processOperator {
-  font-size: $font-size-sm;
-  color: $color-text-secondary;
+.processName {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
 }
 
-.processTime {
-  font-size: $font-size-sm;
-  color: $color-text-tertiary;
-}
-
-.processNotes {
-  font-size: $font-size-sm;
-  color: $color-text-tertiary;
-  @include text-ellipsis-multi(2);
-}
-
-.statusBadge {
+.processStatusTag {
   font-size: $font-size-xs;
-  padding: 4rpx $spacing-sm;
+  padding: 2rpx $spacing-sm;
   border-radius: $radius-xs;
   white-space: nowrap;
 }
 
 .statusPending {
-  color: $color-warning;
-  background: rgba(212, 160, 60, 0.12);
+  color: $color-text-tertiary;
+  background: $color-divider;
 }
 
 .statusProgress {
@@ -257,4 +334,82 @@
 .statusCompleted {
   color: $color-success;
   background: rgba(107, 142, 35, 0.12);
+}
+
+.processNotes {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  @include text-ellipsis-multi(1);
+  display: block;
+  margin-bottom: $spacing-xs;
+}
+
+.processMeta {
+  display: flex;
+  gap: $spacing-lg;
+}
+
+.processMetaText {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
+.processMaterial {
+  font-size: $font-size-xs;
+  color: $color-primary;
+  font-weight: $font-weight-medium;
+}
+
+.materialSection {
+  padding: 0 $spacing-lg;
+  margin-bottom: $spacing-lg;
+}
+
+.materialSummary {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  box-shadow: $shadow-card;
+}
+
+.materialRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: $spacing-sm 0;
+
+  & + & {
+    border-top: 1rpx solid $color-divider;
+  }
+}
+
+.materialRowLabel {
+  font-size: $font-size-md;
+  color: $color-text-secondary;
+}
+
+.materialRowValue {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.materialHighlight {
+  color: $color-primary;
+}
+
+.emptyWrap {
+  @include flex-center;
+  flex-direction: column;
+  padding: 120rpx 0;
+}
+
+.emptyIcon {
+  font-size: 80rpx;
+  margin-bottom: $spacing-md;
+}
+
+.emptyText {
+  font-size: $font-size-md;
+  color: $color-text-tertiary;
 }

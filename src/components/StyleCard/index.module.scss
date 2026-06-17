@@ -42,8 +42,14 @@
 
 .styleBottom {
   display: flex;
-  align-items: baseline;
+  align-items: center;
+  justify-content: space-between;
   margin-top: $spacing-sm;
+}
+
+.priceWrap {
+  display: flex;
+  align-items: baseline;
 }
 
 .stylePrice {
@@ -56,4 +62,23 @@
   font-size: $font-size-xs;
   color: $color-text-tertiary;
   margin-left: 4rpx;
+}
+
+.customBtn {
+  padding: $spacing-xs $spacing-md;
+  background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+  border-radius: $radius-button;
+  transition: all $transition-base;
+
+  &:active {
+    opacity: 0.85;
+    transform: scale(0.95);
+  }
+}
+
+.customBtnText {
+  font-size: $font-size-xs;
+  color: $color-text-white;
+  font-weight: $font-weight-medium;
+  white-space: nowrap;
 }

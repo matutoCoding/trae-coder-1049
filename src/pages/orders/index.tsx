@@ -5,7 +5,8 @@ import styles from './index.module.scss';
 import TabFilter from '@/components/TabFilter';
 import StatCard from '@/components/StatCard';
 import OrderCard from '@/components/OrderCard';
-import { orderList, orderTypeLabels } from '@/data/orders';
+import { useAppStore } from '@/store';
+import { orderTypeLabels } from '@/data/orders';
 
 const orderTabs = [
   { key: 'all', label: '全部' },
@@ -16,18 +17,23 @@ const orderTabs = [
 
 const OrdersPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState('all');
+  const orders = useAppStore((s) => s.orders);
 
   const filteredOrders = useMemo(() => {
-    if (activeTab === 'all') return orderList;
-    return orderList.filter(item => item.type === activeTab);
-  }, [activeTab]);
+    if (activeTab === 'all') return orders;
+    return orders.filter(item => item.type === activeTab);
+  }, [activeTab, orders]);
 
-  const pendingCount = orderList.filter(i => i.status === 'pending').length;
-  const progressCount = orderList.filter(i => i.status === 'in_progress').length;
-  const totalAmount = orderList.reduce((s, i) => s + i.amount, 0);
+  const pendingCount = orders.filter(i => i.status === 'pending').length;
+  const progressCount = orders.filter(i => i.status === 'in_progress').length;
+  const totalAmount = orders.reduce((s, i) => s + i.amount, 0);
 
   const handleAdd = () => {
-    Taro.showToast({ title: '新增订单功能开发中', icon: 'none' });
+    Taro.navigateTo({ url: '/pages/new-order/index' });
+  };
+
+  const handleOrderClick = (orderId: string) => {
+    Taro.navigateTo({ url: `/pages/order-detail/index?id=${orderId}` });
   };
 
   return (
@@ -47,11 +53,18 @@ const OrdersPage: React.FC = () => {
         <TabFilter tabs={orderTabs} activeKey={activeTab} onChange={setActiveTab} />
       </View>
 
-      <View className={styles.orderList}>
-        {filteredOrders.map(item => (
-          <OrderCard key={item.id} item={item} />
-        ))}
-      </View>
+      {filteredOrders.length > 0 ? (
+        <View className={styles.orderList}>
+          {filteredOrders.map(item => (
+            <OrderCard key={item.id} item={item} onClick={() => handleOrderClick(item.id)} />
+          ))}
+        </View>
+      ) : (
+        <View className={styles.emptyWrap}>
+          <Text className={styles.emptyIcon}>📋</Text>
+          <Text className={styles.emptyText}>暂无该类型订单</Text>
+        </View>
+      )}
 
       <View className={styles.addBtn} onClick={handleAdd}>
         <Text className={styles.addBtnText}>+</Text>

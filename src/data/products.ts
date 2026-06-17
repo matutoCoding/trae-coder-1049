@@ -16,7 +16,8 @@ export const productList: ProductItem[] = [
     image: 'https://picsum.photos/id/598/300/300',
     createdAt: '2026-05-20',
     status: 'stock',
-    price: 2680
+    price: 2680,
+    orderId: ''
   },
   {
     id: 'pr002',
@@ -27,7 +28,8 @@ export const productList: ProductItem[] = [
     image: 'https://picsum.photos/id/582/300/300',
     createdAt: '2026-05-18',
     status: 'sold',
-    price: 580
+    price: 580,
+    orderId: ''
   },
   {
     id: 'pr003',
@@ -38,7 +40,8 @@ export const productList: ProductItem[] = [
     image: 'https://picsum.photos/id/230/300/300',
     createdAt: '2026-05-10',
     status: 'stock',
-    price: 1580
+    price: 1580,
+    orderId: ''
   },
   {
     id: 'pr004',
@@ -49,7 +52,8 @@ export const productList: ProductItem[] = [
     image: 'https://picsum.photos/id/225/300/300',
     createdAt: '2026-04-28',
     status: 'reserved',
-    price: 1280
+    price: 1280,
+    orderId: 'o010'
   },
   {
     id: 'pr005',
@@ -60,7 +64,8 @@ export const productList: ProductItem[] = [
     image: 'https://picsum.photos/id/1082/300/300',
     createdAt: '2026-04-15',
     status: 'stock',
-    price: 3680
+    price: 3680,
+    orderId: ''
   },
   {
     id: 'pr006',
@@ -71,7 +76,8 @@ export const productList: ProductItem[] = [
     image: 'https://picsum.photos/id/787/300/300',
     createdAt: '2026-06-01',
     status: 'stock',
-    price: 280
+    price: 280,
+    orderId: ''
   },
   {
     id: 'pr007',
@@ -82,7 +88,8 @@ export const productList: ProductItem[] = [
     image: 'https://picsum.photos/id/3/300/300',
     createdAt: '2026-03-20',
     status: 'sold',
-    price: 4200
+    price: 4200,
+    orderId: ''
   },
   {
     id: 'pr008',
@@ -93,7 +100,8 @@ export const productList: ProductItem[] = [
     image: 'https://picsum.photos/id/1036/300/300',
     createdAt: '2026-05-25',
     status: 'stock',
-    price: 980
+    price: 980,
+    orderId: ''
   },
   {
     id: 'pr009',
@@ -104,17 +112,19 @@ export const productList: ProductItem[] = [
     image: 'https://picsum.photos/id/1015/300/300',
     createdAt: '2026-06-05',
     status: 'reserved',
-    price: 680
+    price: 680,
+    orderId: 'o008'
   },
   {
     id: 'pr010',
-    name: '紫铜茶托五枚装',
+    name: '紫铜茶仓',
     category: '茶器',
-    weight: 280,
-    dimensions: '直径8cm 高1.5cm',
+    weight: 560,
+    dimensions: '口径9cm 高14cm',
     image: 'https://picsum.photos/id/1018/300/300',
-    createdAt: '2026-06-10',
-    status: 'stock',
-    price: 460
+    createdAt: '2026-06-01',
+    status: 'sold',
+    price: 1680,
+    orderId: 'o005'
   }
 ];

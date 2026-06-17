@@ -1,0 +1,155 @@
+@use '@/styles/variables.scss' as *;
+
+.container {
+  min-height: 100vh;
+  background: $color-bg-page;
+  padding-bottom: 40rpx;
+}
+
+.filterRow {
+  padding: $spacing-md $spacing-lg;
+}
+
+.filterTabs {
+  display: flex;
+  gap: $spacing-sm;
+}
+
+.filterTab {
+  padding: $spacing-xs $spacing-lg;
+  background: $color-bg-card;
+  border-radius: $radius-button;
+  border: 2rpx solid $color-border;
+  transition: all $transition-base;
+
+  &:active {
+    opacity: 0.85;
+  }
+}
+
+.filterTabActive {
+  background: $color-primary;
+  border-color: $color-primary;
+}
+
+.filterTabText {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  white-space: nowrap;
+}
+
+.filterTabTextActive {
+  color: $color-text-white;
+  font-weight: $font-weight-medium;
+}
+
+.list {
+  padding: 0 $spacing-lg;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+}
+
+.customerCard {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  box-shadow: $shadow-card;
+  transition: all $transition-base;
+
+  &:active {
+    opacity: 0.9;
+    transform: scale(0.98);
+  }
+}
+
+.customerHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-md;
+}
+
+.customerNameRow {
+  display: flex;
+  align-items: center;
+}
+
+.customerName {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  margin-right: $spacing-sm;
+}
+
+.customerLevel {
+  font-size: $font-size-xs;
+  padding: 2rpx $spacing-sm;
+  border-radius: $radius-xs;
+  white-space: nowrap;
+}
+
+.levelNormal {
+  color: $color-text-tertiary;
+  background: $color-divider;
+}
+
+.levelVip {
+  color: $color-primary-dark;
+  background: $color-tag-bg;
+}
+
+.levelSvip {
+  color: $color-error;
+  background: rgba(199, 84, 80, 0.12);
+}
+
+.customerPhone {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+}
+
+.customerStats {
+  display: flex;
+  gap: $spacing-xl;
+  margin-bottom: $spacing-sm;
+}
+
+.customerStatItem {
+  display: flex;
+  flex-direction: column;
+}
+
+.customerStatLabel {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  margin-bottom: 4rpx;
+}
+
+.customerStatValue {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.customerNotes {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+  @include text-ellipsis-multi(1);
+}
+
+.emptyWrap {
+  @include flex-center;
+  flex-direction: column;
+  padding: 120rpx 0;
+}
+
+.emptyIcon {
+  font-size: 80rpx;
+  margin-bottom: $spacing-md;
+}
+
+.emptyText {
+  font-size: $font-size-md;
+  color: $color-text-tertiary;
+}

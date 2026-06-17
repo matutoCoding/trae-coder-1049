@@ -1,0 +1,262 @@
+@use '@/styles/variables.scss' as *;
+
+.container {
+  min-height: 100vh;
+  background: $color-bg-page;
+  padding-bottom: 40rpx;
+}
+
+.orderCard {
+  margin: $spacing-lg;
+  background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+  border-radius: $radius-lg;
+  padding: $spacing-xl $spacing-lg;
+  box-shadow: $shadow-card;
+}
+
+.orderName {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  color: $color-text-white;
+  display: block;
+  margin-bottom: $spacing-md;
+}
+
+.orderInfo {
+  display: flex;
+  gap: $spacing-xl;
+}
+
+.orderInfoItem {
+  display: flex;
+  flex-direction: column;
+}
+
+.orderInfoLabel {
+  font-size: $font-size-xs;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 4rpx;
+}
+
+.orderInfoValue {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-white;
+}
+
+.section {
+  padding: 0 $spacing-lg;
+  margin-bottom: $spacing-lg;
+}
+
+.materialSummary {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  box-shadow: $shadow-card;
+}
+
+.materialRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: $spacing-sm 0;
+
+  & + & {
+    border-top: 1rpx solid $color-divider;
+  }
+}
+
+.materialLabel {
+  font-size: $font-size-md;
+  color: $color-text-secondary;
+}
+
+.materialValue {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.materialHighlight {
+  color: $color-primary;
+}
+
+.processTimeline {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  box-shadow: $shadow-card;
+}
+
+.processItem {
+  display: flex;
+  padding-bottom: $spacing-lg;
+  position: relative;
+
+  &:last-child {
+    padding-bottom: 0;
+  }
+}
+
+.processLine {
+  width: 48rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.processDot {
+  width: 24rpx;
+  height: 24rpx;
+  border-radius: $radius-round;
+  background: $color-border;
+  flex-shrink: 0;
+}
+
+.processDotDone {
+  background: $color-primary;
+}
+
+.processDotActive {
+  background: $color-warning;
+  box-shadow: 0 0 0 6rpx rgba(212, 160, 60, 0.2);
+}
+
+.processConnector {
+  width: 4rpx;
+  flex: 1;
+  background: $color-border;
+  margin-top: $spacing-xs;
+}
+
+.processConnectorDone {
+  background: $color-primary;
+}
+
+.processContent {
+  flex: 1;
+  margin-left: $spacing-md;
+  min-width: 0;
+}
+
+.processNameRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4rpx;
+}
+
+.processName {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.processStatusTag {
+  font-size: $font-size-xs;
+  padding: 2rpx $spacing-sm;
+  border-radius: $radius-xs;
+  white-space: nowrap;
+}
+
+.statusPending {
+  color: $color-text-tertiary;
+  background: $color-divider;
+}
+
+.statusProgress {
+  color: $color-primary;
+  background: rgba(184, 115, 51, 0.12);
+}
+
+.statusCompleted {
+  color: $color-success;
+  background: rgba(107, 142, 35, 0.12);
+}
+
+.processNotes {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  @include text-ellipsis-multi(2);
+  display: block;
+  margin-bottom: $spacing-xs;
+}
+
+.processMeta {
+  display: flex;
+  gap: $spacing-lg;
+}
+
+.processTime {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
+.processOperator {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
+.processMaterial {
+  font-size: $font-size-xs;
+  color: $color-primary;
+  font-weight: $font-weight-medium;
+}
+
+.emptyWrap {
+  @include flex-center;
+  flex-direction: column;
+  padding: 60rpx 0;
+}
+
+.emptyIcon {
+  font-size: 64rpx;
+  margin-bottom: $spacing-sm;
+}
+
+.emptyText {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+}
+
+.progressBar {
+  margin: $spacing-lg;
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  box-shadow: $shadow-card;
+}
+
+.progressHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: $spacing-md;
+}
+
+.progressLabel {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.progressPercent {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  color: $color-primary;
+}
+
+.progressTrack {
+  height: 16rpx;
+  background: $color-divider;
+  border-radius: $radius-round;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  border-radius: $radius-round;
+  background: linear-gradient(90deg, $color-primary 0%, $color-primary-light 100%);
+}

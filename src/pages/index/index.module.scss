@@ -85,8 +85,14 @@
 }
 
 .emptyTip {
-  text-align: center;
+  @include flex-center;
+  flex-direction: column;
   padding: 80rpx 0;
+}
+
+.emptyIcon {
+  font-size: 80rpx;
+  margin-bottom: $spacing-md;
 }
 
 .emptyText {

@@ -3,7 +3,15 @@ export default defineAppConfig({
     'pages/index/index',
     'pages/orders/index',
     'pages/workshop/index',
-    'pages/ledger/index'
+    'pages/ledger/index',
+    'pages/products/index',
+    'pages/customers/index',
+    'pages/sales/index',
+    'pages/income/index',
+    'pages/customer-detail/index',
+    'pages/order-detail/index',
+    'pages/new-order/index',
+    'pages/workshop-detail/index'
   ],
   window: {
     backgroundTextStyle: 'dark',

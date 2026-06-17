@@ -7,9 +7,11 @@ import SectionHeader from '@/components/SectionHeader';
 import StyleCard from '@/components/StyleCard';
 import StatCard from '@/components/StatCard';
 import { styleList, styleCategories } from '@/data/styles';
+import { useAppStore } from '@/store';
 
 const StylesPage: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState('tea');
+  const orders = useAppStore((s) => s.orders);
 
   const filteredStyles = useMemo(() => {
     return styleList.filter(item => item.category === activeCategory);
@@ -21,15 +23,14 @@ const StylesPage: React.FC = () => {
 
   const totalCount = styleList.length;
   const avgPrice = Math.round(styleList.reduce((s, i) => s + i.price, 0) / totalCount);
-  const teaCount = styleList.filter(i => i.category === 'tea').length;
-  const incenseCount = styleList.filter(i => i.category === 'incense').length;
+  const pendingOrders = orders.filter(o => o.status === 'pending').length;
 
-  const handleCustom = () => {
-    Taro.switchTab({ url: '/pages/orders/index' });
+  const handleCustom = (styleId: string) => {
+    Taro.navigateTo({ url: `/pages/new-order/index?styleId=${styleId}` });
   };
 
-  const handleTradeIn = () => {
-    Taro.switchTab({ url: '/pages/orders/index' });
+  const handleQuickCustom = () => {
+    Taro.navigateTo({ url: '/pages/new-order/index' });
   };
 
   return (
@@ -42,21 +43,20 @@ const StylesPage: React.FC = () => {
       <View className={styles.statsRow}>
         <StatCard label="全部款式" value={totalCount} unit="款" highlight />
         <StatCard label="均价" value={avgPrice} unit="元" />
-        <StatCard label="茶器" value={teaCount} unit="款" />
-        <StatCard label="香器" value={incenseCount} unit="款" />
+        <StatCard label="待处理" value={pendingOrders} unit="单" />
       </View>
 
       <View className={styles.quickEntry}>
         <View className={styles.entryGrid}>
-          <View className={styles.entryItem} onClick={handleCustom}>
+          <View className={styles.entryItem} onClick={handleQuickCustom}>
             <Text className={styles.entryIcon}>🔨</Text>
-            <Text className={styles.entryLabel}>茶器香器定制</Text>
+            <Text className={styles.entryLabel}>茶器定制</Text>
           </View>
-          <View className={styles.entryItem} onClick={handleTradeIn}>
+          <View className={styles.entryItem} onClick={() => Taro.switchTab({ url: '/pages/orders/index' })}>
             <Text className={styles.entryIcon}>♻️</Text>
             <Text className={styles.entryLabel}>以旧换新</Text>
           </View>
-          <View className={styles.entryItem} onClick={() => Taro.switchTab({ url: '/pages/ledger/index' })}>
+          <View className={styles.entryItem} onClick={() => Taro.navigateTo({ url: '/pages/products/index' })}>
             <Text className={styles.entryIcon}>📖</Text>
             <Text className={styles.entryLabel}>作品展示</Text>
           </View>
@@ -68,15 +68,16 @@ const StylesPage: React.FC = () => {
       </View>
 
       <View className={styles.gridSection}>
-        <SectionHeader title="作品展示" actionText="查看全部" />
+        <SectionHeader title="作品展示" actionText="查看全部" onAction={() => Taro.navigateTo({ url: '/pages/products/index' })} />
         {filteredStyles.length > 0 ? (
           <View className={styles.styleGrid}>
             {filteredStyles.map(item => (
-              <StyleCard key={item.id} item={item} />
+              <StyleCard key={item.id} item={item} onCustom={handleCustom} />
             ))}
           </View>
         ) : (
           <View className={styles.emptyTip}>
+            <Text className={styles.emptyIcon}>🏺</Text>
             <Text className={styles.emptyText}>暂无该分类款式</Text>
           </View>
         )}

@@ -1,0 +1,188 @@
+@use '@/styles/variables.scss' as *;
+
+.container {
+  min-height: 100vh;
+  background: $color-bg-page;
+  padding-bottom: 40rpx;
+}
+
+.statsBar {
+  display: flex;
+  gap: $spacing-md;
+  padding: $spacing-md $spacing-lg;
+}
+
+.statChip {
+  padding: $spacing-xs $spacing-md;
+  background: $color-bg-card;
+  border-radius: $radius-button;
+  box-shadow: $shadow-card;
+}
+
+.statChipText {
+  font-size: $font-size-xs;
+  color: $color-text-secondary;
+}
+
+.statChipValue {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: $color-primary;
+  margin-left: 8rpx;
+}
+
+.filterRow {
+  padding: 0 $spacing-lg $spacing-md;
+}
+
+.filterTabs {
+  display: flex;
+  gap: $spacing-sm;
+}
+
+.filterTab {
+  padding: $spacing-xs $spacing-lg;
+  background: $color-bg-card;
+  border-radius: $radius-button;
+  border: 2rpx solid $color-border;
+  transition: all $transition-base;
+
+  &:active {
+    opacity: 0.85;
+  }
+}
+
+.filterTabActive {
+  background: $color-primary;
+  border-color: $color-primary;
+}
+
+.filterTabText {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  white-space: nowrap;
+}
+
+.filterTabTextActive {
+  color: $color-text-white;
+  font-weight: $font-weight-medium;
+}
+
+.list {
+  padding: 0 $spacing-lg;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+}
+
+.saleCard {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  box-shadow: $shadow-card;
+}
+
+.saleHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-sm;
+}
+
+.saleProduct {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  @include text-ellipsis;
+  flex: 1;
+}
+
+.saleType {
+  font-size: $font-size-xs;
+  padding: 4rpx $spacing-sm;
+  border-radius: $radius-xs;
+  white-space: nowrap;
+  margin-left: $spacing-sm;
+  color: $color-tag-text;
+  background: $color-tag-bg;
+}
+
+.saleMeta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-xs;
+}
+
+.saleCustomer {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+}
+
+.saleDate {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
+.saleFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: $spacing-sm;
+  border-top: 1rpx solid $color-divider;
+}
+
+.saleAmount {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  color: $color-price;
+}
+
+.salePayment {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+}
+
+.saleMethod {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
+.saleStatus {
+  font-size: $font-size-xs;
+  padding: 4rpx $spacing-sm;
+  border-radius: $radius-xs;
+  white-space: nowrap;
+}
+
+.paymentPaid {
+  color: $color-success;
+  background: rgba(107, 142, 35, 0.12);
+}
+
+.paymentPartial {
+  color: $color-warning;
+  background: rgba(212, 160, 60, 0.12);
+}
+
+.paymentUnpaid {
+  color: $color-error;
+  background: rgba(199, 84, 80, 0.12);
+}
+
+.emptyWrap {
+  @include flex-center;
+  flex-direction: column;
+  padding: 120rpx 0;
+}
+
+.emptyIcon {
+  font-size: 80rpx;
+  margin-bottom: $spacing-md;
+}
+
+.emptyText {
+  font-size: $font-size-md;
+  color: $color-text-tertiary;
+}

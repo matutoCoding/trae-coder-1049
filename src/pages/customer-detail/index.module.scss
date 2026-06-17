@@ -1,0 +1,243 @@
+@use '@/styles/variables.scss' as *;
+
+.container {
+  min-height: 100vh;
+  background: $color-bg-page;
+  padding-bottom: 40rpx;
+}
+
+.profileCard {
+  margin: $spacing-lg;
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-xl $spacing-lg;
+  box-shadow: $shadow-card;
+}
+
+.profileHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-lg;
+}
+
+.nameRow {
+  display: flex;
+  align-items: center;
+}
+
+.nameText {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  color: $color-text-primary;
+  margin-right: $spacing-sm;
+}
+
+.levelTag {
+  font-size: $font-size-xs;
+  padding: 4rpx $spacing-sm;
+  border-radius: $radius-xs;
+  white-space: nowrap;
+}
+
+.levelNormal {
+  color: $color-text-tertiary;
+  background: $color-divider;
+}
+
+.levelVip {
+  color: $color-primary-dark;
+  background: $color-tag-bg;
+}
+
+.levelSvip {
+  color: $color-error;
+  background: rgba(199, 84, 80, 0.12);
+}
+
+.phoneText {
+  font-size: $font-size-md;
+  color: $color-text-secondary;
+}
+
+.infoGrid {
+  display: flex;
+  gap: $spacing-xl;
+  padding-bottom: $spacing-lg;
+  border-bottom: 1rpx solid $color-divider;
+}
+
+.infoItem {
+  display: flex;
+  flex-direction: column;
+}
+
+.infoLabel {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  margin-bottom: 4rpx;
+}
+
+.infoValue {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.notesText {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+  margin-top: $spacing-md;
+  line-height: $line-height-normal;
+}
+
+.section {
+  padding: 0 $spacing-lg;
+  margin-bottom: $spacing-lg;
+}
+
+.orderCard {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  box-shadow: $shadow-card;
+  margin-bottom: $spacing-md;
+  transition: all $transition-base;
+
+  &:active {
+    opacity: 0.9;
+    transform: scale(0.98);
+  }
+}
+
+.orderHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-sm;
+}
+
+.orderProduct {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  @include text-ellipsis;
+  flex: 1;
+}
+
+.orderType {
+  font-size: $font-size-xs;
+  padding: 4rpx $spacing-sm;
+  border-radius: $radius-xs;
+  white-space: nowrap;
+  margin-left: $spacing-sm;
+  color: $color-tag-text;
+  background: $color-tag-bg;
+}
+
+.orderMeta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.orderDate {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+}
+
+.orderAmount {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  color: $color-price;
+}
+
+.orderStatus {
+  font-size: $font-size-xs;
+  padding: 4rpx $spacing-sm;
+  border-radius: $radius-xs;
+  white-space: nowrap;
+  margin-left: $spacing-sm;
+}
+
+.statusPending {
+  color: $color-warning;
+  background: rgba(212, 160, 60, 0.12);
+}
+
+.statusProgress {
+  color: $color-primary;
+  background: rgba(184, 115, 51, 0.12);
+}
+
+.statusCompleted {
+  color: $color-success;
+  background: rgba(107, 142, 35, 0.12);
+}
+
+.statusDelivered {
+  color: $color-info;
+  background: rgba(123, 143, 161, 0.12);
+}
+
+.saleCard {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  box-shadow: $shadow-card;
+  margin-bottom: $spacing-md;
+}
+
+.saleProduct {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  @include text-ellipsis;
+  display: block;
+  margin-bottom: $spacing-xs;
+}
+
+.saleRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.saleAmount {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  color: $color-price;
+}
+
+.saleStatus {
+  font-size: $font-size-xs;
+  padding: 4rpx $spacing-sm;
+  border-radius: $radius-xs;
+  white-space: nowrap;
+}
+
+.paymentPaid {
+  color: $color-success;
+  background: rgba(107, 142, 35, 0.12);
+}
+
+.paymentPartial {
+  color: $color-warning;
+  background: rgba(212, 160, 60, 0.12);
+}
+
+.emptyWrap {
+  @include flex-center;
+  flex-direction: column;
+  padding: 60rpx 0;
+}
+
+.emptyIcon {
+  font-size: 64rpx;
+  margin-bottom: $spacing-sm;
+}
+
+.emptyText {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+}
