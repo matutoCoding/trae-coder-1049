@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { View, Text, ScrollView } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import classnames from 'classnames';
@@ -7,13 +7,22 @@ import StatCard from '@/components/StatCard';
 import SectionHeader from '@/components/SectionHeader';
 import { useAppStore } from '@/store';
 import { materialList, materialTypeLabels } from '@/data/materials';
-import { processList, processStepLabels, processStepOrder, processStatusLabels } from '@/data/processes';
+import { processStepLabels, processStepOrder, processStatusLabels } from '@/data/processes';
 import { orderTypeLabels, orderStatusLabels } from '@/data/orders';
 
 const WorkshopPage: React.FC = () => {
   const [activeMainTab, setActiveMainTab] = useState<'material' | 'process'>('process');
   const [selectedOrderId, setSelectedOrderId] = useState('');
+  const hydrate = useAppStore((s) => s.hydrate);
   const orders = useAppStore((s) => s.orders);
+  const processes = useAppStore((s) => s.processes);
+  const getProcessesByOrderId = useAppStore((s) => s.getProcessesByOrderId);
+  const getOrderProgress = useAppStore((s) => s.getOrderProgress);
+  const getOrderMaterialUsed = useAppStore((s) => s.getOrderMaterialUsed);
+
+  useEffect(() => {
+    hydrate();
+  }, [hydrate]);
 
   const activeOrders = useMemo(() => {
     return orders.filter(o => o.status === 'pending' || o.status === 'in_progress');
@@ -26,35 +35,39 @@ const WorkshopPage: React.FC = () => {
 
   const orderProcesses = useMemo(() => {
     if (!selectedOrder) return [];
-    return processStepOrder.map(step => {
-      const found = processList.find(p => p.orderId === selectedOrder.id && p.step === step);
-      return {
+    const procs = getProcessesByOrderId(selectedOrder.id);
+    if (procs.length === 0) {
+      return processStepOrder.map(step => ({
         step,
         label: processStepLabels[step],
-        status: found?.status || 'pending',
-        operator: found?.operator || '',
-        startTime: found?.startTime || '',
-        notes: found?.notes || '',
-        materialUsed: found?.materialUsed || 0
-      };
-    });
-  }, [selectedOrder]);
-
-  const completedSteps = useMemo(() => {
-    if (!selectedOrder) return 0;
-    return processList.filter(p => p.orderId === selectedOrder.id && p.status === 'completed').length;
-  }, [selectedOrder]);
+        status: 'pending',
+        operator: '',
+        startTime: '',
+        notes: '',
+        materialUsed: 0
+      }));
+    }
+    return procs.map(p => ({
+      step: p.step,
+      label: processStepLabels[p.step],
+      status: p.status,
+      operator: p.operator,
+      startTime: p.startTime,
+      notes: p.notes,
+      materialUsed: p.materialUsed
+    }));
+  }, [selectedOrder, getProcessesByOrderId]);
 
   const progressPercent = useMemo(() => {
-    if (!orderProcesses.length) return 0;
-    return Math.round((completedSteps / orderProcesses.length) * 100);
-  }, [completedSteps, orderProcesses]);
+    if (!selectedOrder) return 0;
+    return getOrderProgress(selectedOrder.id);
+  }, [selectedOrder, getOrderProgress]);
 
   const totalRedCopper = materialList.filter(m => m.type === 'red_copper').reduce((s, m) => s + m.remaining, 0);
   const totalBrass = materialList.filter(m => m.type === 'brass').reduce((s, m) => s + m.remaining, 0);
   const totalBronze = materialList.filter(m => m.type === 'bronze').reduce((s, m) => s + m.remaining, 0);
 
-  const inProgressProcesses = processList.filter(p => p.status === 'in_progress');
+  const inProgressProcesses = processes.filter(p => p.status === 'in_progress');
 
   return (
     <View className={styles.container}>
@@ -231,7 +244,7 @@ const WorkshopPage: React.FC = () => {
                   <View className={styles.materialRow}>
                     <Text className={styles.materialRowLabel}>已消耗</Text>
                     <Text className={`${styles.materialRowValue} ${styles.materialHighlight}`}>
-                      {processList.filter(p => p.orderId === selectedOrder.id).reduce((s, p) => s + p.materialUsed, 0).toFixed(2)}kg
+                      {getOrderMaterialUsed(selectedOrder.id).toFixed(2)}kg
                     </Text>
                   </View>
                 </View>

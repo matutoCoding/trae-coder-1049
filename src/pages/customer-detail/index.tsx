@@ -1,13 +1,13 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect } from 'react';
 import { View, Text } from '@tarojs/components';
 import Taro, { useRouter } from '@tarojs/taro';
 import classnames from 'classnames';
 import styles from './index.module.scss';
 import SectionHeader from '@/components/SectionHeader';
-import { customerList, customerLevelLabels } from '@/data/customers';
+import { customerLevelLabels } from '@/data/customers';
 import { useAppStore } from '@/store';
 import { orderTypeLabels, orderStatusLabels } from '@/data/orders';
-import { saleList, paymentStatusLabels } from '@/data/sales';
+import { paymentStatusLabels } from '@/data/sales';
 
 const levelStyleMap: Record<string, string> = {
   normal: styles.levelNormal,
@@ -25,21 +25,31 @@ const statusStyleMap: Record<string, string> = {
 const CustomerDetailPage: React.FC = () => {
   const router = useRouter();
   const customerId = router.params.id || '';
+  const hydrate = useAppStore((s) => s.hydrate);
+  const customers = useAppStore((s) => s.customers);
   const orders = useAppStore((s) => s.orders);
+  const sales = useAppStore((s) => s.sales);
+  const getSalesByCustomerId = useAppStore((s) => s.getSalesByCustomerId);
+
+  useEffect(() => {
+    hydrate();
+  }, [hydrate]);
 
   const customer = useMemo(() => {
-    return customerList.find(c => c.id === customerId);
-  }, [customerId]);
+    return customers.find(c => c.id === customerId);
+  }, [customers, customerId]);
 
   const customerOrders = useMemo(() => {
     if (!customer) return [];
-    return orders.filter(o => o.customerName === customer.name);
+    return orders.filter(o => o.customerName === customer.name).sort((a, b) =>
+      b.createdAt.localeCompare(a.createdAt)
+    );
   }, [customer, orders]);
 
   const customerSales = useMemo(() => {
     if (!customer) return [];
-    return saleList.filter(s => s.customerId === customerId);
-  }, [customer, customerId]);
+    return getSalesByCustomerId(customer.id);
+  }, [customer, getSalesByCustomerId]);
 
   if (!customer) {
     return (

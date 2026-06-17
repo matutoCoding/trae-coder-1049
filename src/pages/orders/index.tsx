@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { View, Text } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import styles from './index.module.scss';
@@ -17,7 +17,12 @@ const orderTabs = [
 
 const OrdersPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState('all');
+  const hydrate = useAppStore((s) => s.hydrate);
   const orders = useAppStore((s) => s.orders);
+
+  useEffect(() => {
+    hydrate();
+  }, [hydrate]);
 
   const filteredOrders = useMemo(() => {
     if (activeTab === 'all') return orders;

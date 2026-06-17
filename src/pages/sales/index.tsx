@@ -1,8 +1,9 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { View, Text } from '@tarojs/components';
 import classnames from 'classnames';
 import styles from './index.module.scss';
-import { saleList, saleTypeLabels, paymentMethodLabels, paymentStatusLabels } from '@/data/sales';
+import { saleTypeLabels, paymentMethodLabels, paymentStatusLabels } from '@/data/sales';
+import { useAppStore } from '@/store';
 
 const typeFilters = [
   { key: 'all', label: '全部' },
@@ -20,11 +21,17 @@ const paymentStyleMap: Record<string, string> = {
 
 const SalesPage: React.FC = () => {
   const [activeFilter, setActiveFilter] = useState('all');
+  const hydrate = useAppStore((s) => s.hydrate);
+  const sales = useAppStore((s) => s.sales);
+
+  useEffect(() => {
+    hydrate();
+  }, [hydrate]);
 
   const filteredSales = useMemo(() => {
-    if (activeFilter === 'all') return saleList;
-    return saleList.filter(s => s.type === activeFilter);
-  }, [activeFilter]);
+    if (activeFilter === 'all') return sales;
+    return sales.filter(s => s.type === activeFilter);
+  }, [activeFilter, sales]);
 
   const totalSales = filteredSales.reduce((s, i) => s + i.amount, 0);
   const paidAmount = filteredSales.filter(s => s.status === 'paid').reduce((s, i) => s + i.amount, 0);

@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { View, Text } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import styles from './index.module.scss';
@@ -11,7 +11,12 @@ import { useAppStore } from '@/store';
 
 const StylesPage: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState('tea');
+  const hydrate = useAppStore((s) => s.hydrate);
   const orders = useAppStore((s) => s.orders);
+
+  useEffect(() => {
+    hydrate();
+  }, [hydrate]);
 
   const filteredStyles = useMemo(() => {
     return styleList.filter(item => item.category === activeCategory);

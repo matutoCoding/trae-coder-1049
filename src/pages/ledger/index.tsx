@@ -1,20 +1,26 @@
-import React from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { View, Text } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import styles from './index.module.scss';
 import StatCard from '@/components/StatCard';
 import { productList } from '@/data/products';
-import { customerList } from '@/data/customers';
-import { saleList } from '@/data/sales';
 import { useAppStore } from '@/store';
 
 const LedgerPage: React.FC = () => {
+  const hydrate = useAppStore((s) => s.hydrate);
   const orders = useAppStore((s) => s.orders);
+  const customers = useAppStore((s) => s.customers);
+  const sales = useAppStore((s) => s.sales);
+  const getSalesStats = useAppStore((s) => s.getSalesStats);
 
-  const totalSales = saleList.reduce((s, i) => s + i.amount, 0);
-  const paidAmount = saleList.filter(s => s.status === 'paid').reduce((s, i) => s + i.amount, 0);
+  useEffect(() => {
+    hydrate();
+  }, [hydrate]);
+
+  const totalSales = useMemo(() => sales.reduce((s, i) => s + i.amount, 0), [sales]);
+  const paidAmount = useMemo(() => sales.filter(s => s.status === 'paid').reduce((s, i) => s + i.amount, 0), [sales]);
   const stockCount = productList.filter(p => p.status === 'stock').length;
-  const vipCount = customerList.filter(c => c.level === 'vip' || c.level === 'svip').length;
+  const vipCount = customers.filter(c => c.level === 'vip' || c.level === 'svip').length;
   const netProfit = Math.round(totalSales * 0.5);
 
   const modules = [

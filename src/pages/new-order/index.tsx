@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Input, Image, Textarea } from '@tarojs/components';
 import Taro, { useRouter } from '@tarojs/taro';
 import classnames from 'classnames';
@@ -16,7 +16,12 @@ const orderTypes: { key: OrderType; label: string }[] = [
 const NewOrderPage: React.FC = () => {
   const router = useRouter();
   const styleId = router.params.styleId || '';
+  const hydrate = useAppStore((s) => s.hydrate);
   const addOrder = useAppStore((s) => s.addOrder);
+
+  useEffect(() => {
+    hydrate();
+  }, [hydrate]);
 
   const styleItem = styleList.find(s => s.id === styleId);
 

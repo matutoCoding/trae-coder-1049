@@ -1,18 +1,25 @@
-import React from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { View, Text } from '@tarojs/components';
 import styles from './index.module.scss';
 import SectionHeader from '@/components/SectionHeader';
-import { saleList } from '@/data/sales';
+import { useAppStore } from '@/store';
 
 const IncomePage: React.FC = () => {
-  const totalSales = saleList.reduce((s, i) => s + i.amount, 0);
-  const paidAmount = saleList.filter(s => s.status === 'paid').reduce((s, i) => s + i.amount, 0);
+  const hydrate = useAppStore((s) => s.hydrate);
+  const sales = useAppStore((s) => s.sales);
+
+  useEffect(() => {
+    hydrate();
+  }, [hydrate]);
+
+  const totalSales = useMemo(() => sales.reduce((s, i) => s + i.amount, 0), [sales]);
+  const paidAmount = useMemo(() => sales.filter(s => s.status === 'paid').reduce((s, i) => s + i.amount, 0), [sales]);
   const unpaidAmount = totalSales - paidAmount;
 
-  const customIncome = saleList.filter(s => s.type === 'custom').reduce((s, i) => s + i.amount, 0);
-  const retailIncome = saleList.filter(s => s.type === 'retail').reduce((s, i) => s + i.amount, 0);
-  const wholesaleIncome = saleList.filter(s => s.type === 'wholesale').reduce((s, i) => s + i.amount, 0);
-  const repairIncome = saleList.filter(s => s.type === 'repair').reduce((s, i) => s + i.amount, 0);
+  const customIncome = useMemo(() => sales.filter(s => s.type === 'custom').reduce((s, i) => s + i.amount, 0), [sales]);
+  const retailIncome = useMemo(() => sales.filter(s => s.type === 'retail').reduce((s, i) => s + i.amount, 0), [sales]);
+  const wholesaleIncome = useMemo(() => sales.filter(s => s.type === 'wholesale').reduce((s, i) => s + i.amount, 0), [sales]);
+  const repairIncome = useMemo(() => sales.filter(s => s.type === 'repair').reduce((s, i) => s + i.amount, 0), [sales]);
 
   const materialCost = Math.round(totalSales * 0.35);
   const workshopCost = Math.round(totalSales * 0.15);

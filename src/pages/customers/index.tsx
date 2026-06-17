@@ -1,9 +1,10 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { View, Text } from '@tarojs/components';
 import classnames from 'classnames';
 import Taro from '@tarojs/taro';
 import styles from './index.module.scss';
-import { customerList, customerLevelLabels } from '@/data/customers';
+import { customerLevelLabels } from '@/data/customers';
+import { useAppStore } from '@/store';
 
 const levelFilters = [
   { key: 'all', label: '全部' },
@@ -20,11 +21,20 @@ const levelStyleMap: Record<string, string> = {
 
 const CustomersPage: React.FC = () => {
   const [activeFilter, setActiveFilter] = useState('all');
+  const hydrate = useAppStore((s) => s.hydrate);
+  const customers = useAppStore((s) => s.customers);
+  const getCustomerStats = useAppStore((s) => s.getCustomerStats);
+
+  useEffect(() => {
+    hydrate();
+  }, [hydrate]);
 
   const filteredCustomers = useMemo(() => {
-    if (activeFilter === 'all') return customerList;
-    return customerList.filter(c => c.level === activeFilter);
-  }, [activeFilter]);
+    if (activeFilter === 'all') return customers;
+    return customers.filter(c => c.level === activeFilter);
+  }, [activeFilter, customers]);
+
+  const stats = getCustomerStats();
 
   return (
     <View className={styles.container}>

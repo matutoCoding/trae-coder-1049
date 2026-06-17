@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect } from 'react';
 import { View, Text } from '@tarojs/components';
 import Taro, { useRouter } from '@tarojs/taro';
 import classnames from 'classnames';
@@ -6,7 +6,7 @@ import styles from './index.module.scss';
 import SectionHeader from '@/components/SectionHeader';
 import { useAppStore } from '@/store';
 import { orderTypeLabels, orderStatusLabels } from '@/data/orders';
-import { processList, processStepLabels, processStepOrder, processStatusLabels } from '@/data/processes';
+import { processStepLabels, processStepOrder, processStatusLabels } from '@/data/processes';
 import { materialTypeLabels } from '@/data/materials';
 
 const statusStyleMap: Record<string, string> = {
@@ -19,8 +19,17 @@ const statusStyleMap: Record<string, string> = {
 const OrderDetailPage: React.FC = () => {
   const router = useRouter();
   const orderId = router.params.id || '';
+  const hydrate = useAppStore((s) => s.hydrate);
   const orders = useAppStore((s) => s.orders);
+  const processes = useAppStore((s) => s.processes);
   const updateOrderStatus = useAppStore((s) => s.updateOrderStatus);
+  const getProcessesByOrderId = useAppStore((s) => s.getProcessesByOrderId);
+  const getOrderMaterialUsed = useAppStore((s) => s.getOrderMaterialUsed);
+  const getOrderProgress = useAppStore((s) => s.getOrderProgress);
+
+  useEffect(() => {
+    hydrate();
+  }, [hydrate]);
 
   const order = useMemo(() => {
     return orders.find(o => o.id === orderId);
@@ -28,25 +37,36 @@ const OrderDetailPage: React.FC = () => {
 
   const orderProcesses = useMemo(() => {
     if (!order) return [];
-    return processStepOrder.map(step => {
-      const found = processList.find(p => p.orderId === orderId && p.step === step);
-      return {
+    const procs = getProcessesByOrderId(orderId);
+    if (procs.length === 0) {
+      return processStepOrder.map(step => ({
         step,
         label: processStepLabels[step],
-        status: found?.status || 'pending',
-        operator: found?.operator || '',
-        startTime: found?.startTime || '',
-        notes: found?.notes || '',
-        materialUsed: found?.materialUsed || 0
-      };
-    });
-  }, [order, orderId]);
+        status: 'pending',
+        operator: '',
+        startTime: '',
+        notes: '',
+        materialUsed: 0
+      }));
+    }
+    return procs.map(p => ({
+      step: p.step,
+      label: processStepLabels[p.step],
+      status: p.status,
+      operator: p.operator,
+      startTime: p.startTime,
+      notes: p.notes,
+      materialUsed: p.materialUsed
+    }));
+  }, [order, orderId, processes, getProcessesByOrderId]);
 
   const totalMaterialUsed = useMemo(() => {
-    return processList
-      .filter(p => p.orderId === orderId)
-      .reduce((s, p) => s + p.materialUsed, 0);
-  }, [orderId]);
+    return getOrderMaterialUsed(orderId);
+  }, [orderId, processes, getOrderMaterialUsed]);
+
+  const progressPercent = useMemo(() => {
+    return getOrderProgress(orderId);
+  }, [orderId, processes, getOrderProgress]);
 
   const handleStatusChange = () => {
     if (!order) return;
@@ -117,6 +137,15 @@ const OrderDetailPage: React.FC = () => {
 
       <View className={styles.section}>
         <SectionHeader title="工序进度" actionText="查看工坊" onAction={handleGoWorkshop} />
+        <View className={styles.progressBar}>
+          <View className={styles.progressHeader}>
+            <Text className={styles.progressLabel}>完成进度</Text>
+            <Text className={styles.progressPercent}>{progressPercent}%</Text>
+          </View>
+          <View className={styles.progressTrack}>
+            <View className={styles.progressFill} style={{ width: `${progressPercent}%` }} />
+          </View>
+        </View>
         <View className={styles.processTimeline}>
           {orderProcesses.map((item, idx) => {
             const dotClass = item.status === 'completed'
